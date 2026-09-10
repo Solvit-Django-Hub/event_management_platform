@@ -149,7 +149,7 @@ backend/
 1. **Clone the repository**
 
    ```bash
-   git clone <your-repo-url>
+   git clone event_management_hub
    cd backend
    ```
 

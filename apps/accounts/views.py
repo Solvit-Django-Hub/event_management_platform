@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from .serializers import RegisterSerializer
+from .serializers import RegisterSerializer,LoginSerializer,LogoutSerializer,ProfileSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import RegisterSerializer, LoginSerializer, LogoutSerializer
-
+from rest_framework.permissions import AllowAny, IsAuthenticated
 # Create your views here.
 
 class RegisterView(generics.CreateAPIView):
@@ -60,3 +60,11 @@ class LogoutView(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )    
    
+class ProfileView(APIView):
+    permission_classes=[IsAuthenticated]
+    
+    def get (self,request): 
+        profile=request.user.profile
+        serializer=ProfileSerializer(profile)
+        
+        return Response(serializer.data,status=status.HTTP_200_OK)  

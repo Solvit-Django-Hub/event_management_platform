@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-uwgve@_q8in2d+q&o+5*%r0j#_t&ai##98wm&gafb8z2exw)if'
+SECRET_KEY = config("SECRET_KEY")
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_filters",
     "rest_framework_simplejwt.token_blacklist",
+    "drf_spectacular",
 
     # Local apps
     "apps.accounts",
@@ -56,6 +58,7 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        
     ),
 
     "DEFAULT_PERMISSION_CLASSES": (
@@ -73,6 +76,24 @@ REST_FRAMEWORK = {
     ),
 
     "PAGE_SIZE": 10,
+    
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": config(
+        "API_TITLE",
+        default="Event Management Platform API"
+    ),
+    "DESCRIPTION": config(
+        "API_DESCRIPTION",
+        default="REST API for the Event Management Platform"
+    ),
+    "VERSION": config(
+        "API_VERSION",
+        default="1.0.0"
+    ),
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 AUTH_USER_MODEL = "accounts.User"

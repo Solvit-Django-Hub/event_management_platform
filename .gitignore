@@ -15,7 +15,9 @@ db.sqlite3
 # IDE
 .vscode/
 .idea/
-
+# Django migrations
+apps/*/migrations/*.py
+!apps/*/migrations/__init__.py
 # OS
 .DS_Store
 Thumbs.db
